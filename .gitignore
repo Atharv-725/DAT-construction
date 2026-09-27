@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .astro/
+.vercel/
 src/data/company.json
 .env
 .env.local
@@ -8,3 +9,4 @@ src/data/company.json
 *.log
 quote_requests.xlsx
 quote_requests_pending.json
+customers.json

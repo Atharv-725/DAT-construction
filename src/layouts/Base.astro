@@ -57,6 +57,22 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Instant Client-side Access Guard -->
+  <script is:inline>
+    (function() {
+      var path = window.location.pathname;
+      // Allow auth page, api routes, and 404
+      if (path === '/login' || path.startsWith('/login/') || path.startsWith('/api/') || path === '/404') {
+        return;
+      }
+      var session = localStorage.getItem('dat_customer_session');
+      if (!session) {
+        var currentUrl = window.location.pathname + window.location.search;
+        window.location.replace('/login?redirect=' + encodeURIComponent(currentUrl));
+      }
+    })();
+  </script>
 </head>
 <body>
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
@@ -82,6 +98,11 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
           {hasPhone(company) && (
             <a href={`tel:${company.phone.dial}`}>📞 {company.phone.display}</a>
           )}
+          <!-- Top Bar Customer Auth Profile & Logout -->
+          <div id="topBarUserSection" class="top-bar-user hidden">
+            <span class="user-email" id="userEmailSpan"></span>
+            <button class="btn-logout global-logout-btn" type="button" title="Sign out of customer account">Sign Out</button>
+          </div>
         </div>
       </div>
     </div>
@@ -109,6 +130,15 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       <a href="/projects" aria-current={currentPath === '/projects' ? 'page' : undefined}>Projects</a>
       <a href="/equipment-safety" aria-current={currentPath === '/equipment-safety' ? 'page' : undefined}>Equipment & Safety</a>
       <a href="/contact" class="nav-cta" aria-current={currentPath === '/contact' ? 'page' : undefined}>Get a Quote</a>
+
+      <!-- Unauthenticated customer portal link -->
+      <a href="/login" id="navAuthLink" class="nav-auth-item">Customer Portal</a>
+
+      <!-- Logged in Customer Wrapper with Sign Out -->
+      <div id="navUserWrapper" class="nav-user-wrapper hidden">
+        <span id="navUserPill" class="nav-user-pill">👤 Account</span>
+        <button class="btn-logout global-logout-btn" type="button" title="Sign out of customer account">Sign Out</button>
+      </div>
     </nav>
   </header>
 
@@ -175,6 +205,46 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
         }
       });
     }
+
+    // Dynamic User Auth UI & Sign Out Handler
+    const topBarUserSection = document.getElementById('topBarUserSection');
+    const userEmailSpan = document.getElementById('userEmailSpan');
+    const navAuthLink = document.getElementById('navAuthLink');
+    const navUserWrapper = document.getElementById('navUserWrapper');
+    const navUserPill = document.getElementById('navUserPill');
+
+    try {
+      const rawSession = localStorage.getItem('dat_customer_session');
+      if (rawSession) {
+        const session = JSON.parse(rawSession);
+        if (session && session.email) {
+          // Update Top Bar
+          if (topBarUserSection && userEmailSpan) {
+            userEmailSpan.textContent = session.email;
+            topBarUserSection.classList.remove('hidden');
+          }
+          // Update Navigation Bar
+          if (navAuthLink) {
+            navAuthLink.classList.add('hidden');
+          }
+          if (navUserWrapper && navUserPill) {
+            navUserPill.textContent = session.fullName ? `👤 ${session.fullName}` : `👤 ${session.email.split('@')[0]}`;
+            navUserWrapper.classList.remove('hidden');
+          }
+        }
+      }
+    } catch (e) {
+      // Session parse error fallback
+    }
+
+    // Attach click listener to all global Sign Out buttons
+    document.querySelectorAll('.global-logout-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        localStorage.removeItem('dat_customer_session');
+        document.cookie = 'dat_customer_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        window.location.href = '/login';
+      });
+    });
   </script>
 </body>
 </html>
