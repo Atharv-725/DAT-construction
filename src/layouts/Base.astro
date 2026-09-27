@@ -127,7 +127,9 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       <a href="/contact" class="nav-cta" aria-current={currentPath === '/contact' ? 'page' : undefined}>Get a Quote</a>
 
       <!-- Unauthenticated customer portal link -->
-      <a href="/login" id="navAuthLink" class="nav-auth-item">Customer Portal</a>
+      {currentPath !== '/login' && currentPath !== '/login/' && (
+        <a href="/login" id="navAuthLink" class="nav-auth-item">Customer Portal</a>
+      )}
 
       <!-- Logged in Customer Pill with Avatar + 3 lines icon + Dropdown Menu -->
       <div id="userAccountMenu" class="user-account-wrapper hidden">
