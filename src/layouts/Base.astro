@@ -114,10 +114,6 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       </div>
     </a>
 
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primaryNav">
-      <span></span><span></span><span></span>
-    </button>
-
     <nav class="nav-links" id="primaryNav">
       <a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
       <a href="/about" aria-current={currentPath === '/about' ? 'page' : undefined}>About</a>
@@ -130,7 +126,9 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       {currentPath !== '/login' && currentPath !== '/login/' && (
         <a href="/login" id="navAuthLink" class="nav-auth-item">Customer Portal</a>
       )}
+    </nav>
 
+    <div class="nav-right-actions">
       <!-- Logged in Customer Pill with Avatar + 3 lines icon + Dropdown Menu -->
       <div id="userAccountMenu" class="user-account-wrapper hidden">
         <button id="accountMenuBtn" class="account-menu-pill" type="button" aria-expanded="false" aria-label="Customer Account menu">
@@ -161,7 +159,11 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
           </div>
         </div>
       </div>
-    </nav>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primaryNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </header>
 
   <main id="main-content">

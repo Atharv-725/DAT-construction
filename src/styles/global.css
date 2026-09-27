@@ -421,6 +421,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   gap: 28px;
   font-size: 0.9rem;
   font-weight: 600;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.nav-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  z-index: 1001;
 }
 
 .nav-links a {
@@ -612,6 +622,8 @@ input, select, textarea {
     box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
     display: none;
     z-index: 999;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .nav-links.open {
@@ -689,6 +701,10 @@ input, select, textarea {
   .btn {
     width: 100%;
     padding: 12px 20px;
+  }
+
+  .brand-sub {
+    display: none;
   }
 }
 
