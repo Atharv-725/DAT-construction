@@ -1,0 +1,28 @@
+{
+  "legalName": "",
+  "displayName": "",
+  "tagline": "",
+  "phone": {
+    "display": "",
+    "dial": ""
+  },
+  "whatsapp": "",
+  "email": "",
+  "address": {
+    "line1": "",
+    "city": "",
+    "state": "",
+    "pincode": "",
+    "country": "IN"
+  },
+  "geo": {
+    "lat": null,
+    "lng": null
+  },
+  "googleMapsUrl": "",
+  "googleBusinessProfileUrl": "",
+  "registrations": [],
+  "certifications": [],
+  "stats": [],
+  "companyProfilePdf": ""
+}

@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCompanyData, hasAddress } from '../lib/company';
+
+const company = getCompanyData();
+---
+
+<Base title="About Us | DAT Construction" description="Learn about DAT Construction, civil engineering and infrastructure contractor in Indore, MP.">
+  <div class="page-banner">
+    <div class="section-container">
+      <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <strong>About</strong></div>
+      <h1>About DAT Construction</h1>
+      <p class="banner-sub">Civil infrastructure contractor and maintenance partner based in Indore, Madhya Pradesh.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-container about-grid">
+      <div class="about-content">
+        <span class="section-tag">COMPANY PROFILE</span>
+        <h2>Civil Engineering & Infrastructure Maintenance</h2>
+        <p class="lead-p">DAT Construction is a civil engineering contractor based in Indore, specializing in building construction, sewage treatment plant operations, water supply systems, and institutional grounds maintenance.</p>
+        <p>Operating from our Rajendra Nagar office in Indore, our team manages direct contract execution for government, institutional, and private facilities across the Malwa region.</p>
+        <p>We focus on direct site supervision, quality raw material testing, safety protocols, and transparent bill of quantities execution.</p>
+      </div>
+
+      <div class="about-sidebar">
+        <div class="info-card">
+          <h3>Contact Information</h3>
+          {hasAddress(company) ? (
+            <address class="address-box">
+              <strong>Office:</strong><br>
+              {company.address.line1}<br>
+              {company.address.city}, {company.address.state} {company.address.pincode}
+            </address>
+          ) : (
+            <address class="address-box">
+              <strong>Office:</strong><br>
+              7/C, Rajendra Nagar,<br>
+              Indore, Madhya Pradesh - 452012, India
+            </address>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 48px;
+  }
+  .lead-p {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--navy-deep);
+    margin-bottom: 16px;
+  }
+  .about-content p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .info-card {
+    background-color: var(--navy-deep);
+    color: #FFFFFF;
+    padding: 32px;
+    border-radius: var(--radius-md);
+  }
+  .info-card h3 {
+    color: #FFFFFF;
+    margin-bottom: 16px;
+  }
+  .address-box {
+    font-style: normal;
+    color: #CBD5E1;
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,310 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCompanyData, hasStats, hasWhatsapp } from '../lib/company';
+import { getCollection } from 'astro:content';
+
+const company = getCompanyData();
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects.slice(0, 3);
+const renderStats = hasStats(company);
+const renderWhatsapp = hasWhatsapp(company);
+---
+
+<Base>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <span class="location-pill">INDORE · MADHYA PRADESH</span>
+        <h1>DAT Construction delivers civil engineering, water treatment, landscaping, and facility maintenance works across Central India.</h1>
+        
+        <div class="hero-cta-group">
+          <a href="/contact" class="btn btn-gold">Get a Quote</a>
+          {renderWhatsapp && (
+            <a href={`https://wa.me/${company.whatsapp}?text=Hello%20DAT%20Construction,%20I%20would%20like%20to%20request%20a%20quote.`} target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+              WhatsApp Us
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Do Section -->
+  <section class="section services-summary">
+    <div class="section-container">
+      <div class="section-header center">
+        <span class="section-tag">WHAT WE DO</span>
+        <h2>Core Construction & Infrastructure Services</h2>
+        <p class="section-sub">Direct contract execution for institutional, municipal, and commercial facilities.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-box">
+          <h3>Civil & Structural Construction</h3>
+          <p>Building repair, RCC concrete structures, masonry walls, site preparation, and security fencing.</p>
+          <a href="/services#civil" class="service-link">View Civil Services ↗</a>
+        </div>
+
+        <div class="service-box">
+          <h3>Water & Sewage Systems (STP)</h3>
+          <p>Operations and maintenance of Sewage Treatment Plants, collection wells, and water distribution networks.</p>
+          <a href="/services#water" class="service-link">View Water Services ↗</a>
+        </div>
+
+        <div class="service-box">
+          <h3>Institutional Landscaping</h3>
+          <p>Park development, nursery management, afforestation programs, and high-acreage grounds maintenance.</p>
+          <a href="/services#landscaping" class="service-link">View Landscaping Services ↗</a>
+        </div>
+
+        <div class="service-box">
+          <h3>Roads & Paving</h3>
+          <p>Bituminous and concrete access roads, stormwater drainage networks, and paver block laying.</p>
+          <a href="/services#roads" class="service-link">View Paving Services ↗</a>
+        </div>
+
+        <div class="service-box">
+          <h3>Preventive Maintenance (AMC)</h3>
+          <p>Annual Maintenance Contracts for public complexes, residential quarters, and utility installations.</p>
+          <a href="/services#amc" class="service-link">View Maintenance Services ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects Section -->
+  <section class="section projects-preview">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">FEATURED WORK</span>
+        <h2>Recent Infrastructure Projects</h2>
+      </div>
+
+      <div class="projects-grid">
+        {featuredProjects.map(project => (
+          <article class="project-card">
+            <span class="client-tag">{project.data.client}</span>
+            <h3>{project.data.title}</h3>
+            <p>{project.data.scope}</p>
+            <a href="/projects" class="card-link">View Project Details ↗</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof Strip (Only renders if company.stats is populated) -->
+  {renderStats && (
+    <section class="proof-strip">
+      <div class="section-container proof-grid">
+        {company.stats.map(stat => (
+          <div class="proof-item">
+            <strong>{stat.value}</strong>
+            <span>{stat.label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Service Area & Location -->
+  <section class="section location-section">
+    <div class="section-container">
+      <div class="location-box">
+        <div class="location-info">
+          <span class="section-tag">SERVICE AREA</span>
+          <h2>Based in Indore, Serving Madhya Pradesh</h2>
+          <p>Our site management team, equipment fleet, and skilled workforce operate from our Rajendra Nagar office in Indore to support civil and infrastructure projects across the Malwa region.</p>
+          <address class="address-text">
+            <strong>Office Address:</strong> 7/C, Rajendra Nagar, Indore, Madhya Pradesh - 452012, India
+          </address>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA Banner -->
+  <section class="cta-banner">
+    <div class="section-container cta-content">
+      <h2>Looking for a Civil or Maintenance Subcontractor?</h2>
+      <p>Contact DAT Construction for project estimations, site visits, and direct contract discussions.</p>
+      <a href="/contact" class="btn btn-gold">Get a Quote ↗</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, #091322 0%, #0F2537 100%);
+    color: #FFFFFF;
+    padding: 90px 0 100px;
+  }
+  .hero-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .location-pill {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--gold-primary);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+    color: #FFFFFF;
+    max-width: 900px;
+    line-height: 1.18;
+    margin-bottom: 32px;
+  }
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-whatsapp {
+    background-color: #25D366;
+    color: #FFFFFF;
+  }
+  .btn-whatsapp:hover {
+    background-color: #1EBE5D;
+  }
+  .services-summary {
+    background-color: var(--bg-main);
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .service-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 32px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+  }
+  .service-box h3 {
+    color: var(--navy-deep);
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+  .service-box p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+  .service-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--gold-text);
+  }
+  .projects-preview {
+    background-color: var(--bg-subtle);
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .project-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 28px;
+    border-radius: var(--radius-md);
+  }
+  .client-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--navy-deep);
+    background-color: var(--bg-subtle);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+  }
+  .project-card h3 {
+    color: var(--navy-deep);
+    font-size: 1.15rem;
+    margin: 14px 0 10px;
+  }
+  .project-card p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-bottom: 16px;
+  }
+  .card-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold-text);
+  }
+  .proof-strip {
+    background-color: var(--navy-slate);
+    color: #FFFFFF;
+    padding: 40px 0;
+  }
+  .proof-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .proof-item {
+    text-align: center;
+  }
+  .proof-item strong {
+    display: block;
+    font-size: 2.2rem;
+    color: var(--gold-primary);
+  }
+  .proof-item span {
+    font-size: 0.85rem;
+    color: #CBD5E1;
+  }
+  .location-section {
+    background-color: var(--bg-main);
+  }
+  .location-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: var(--radius-md);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .location-info h2 {
+    color: var(--navy-deep);
+    margin: 12px 0 16px;
+  }
+  .location-info p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .address-text {
+    font-style: normal;
+    font-size: 0.95rem;
+    color: var(--navy-deep);
+  }
+  .cta-banner {
+    background-color: var(--navy-deep);
+    color: #FFFFFF;
+    padding: 60px 0;
+    text-align: center;
+  }
+  .cta-content h2 {
+    font-size: 2rem;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+  }
+  .cta-content p {
+    color: #94A3B8;
+    margin-bottom: 24px;
+  }
+</style>

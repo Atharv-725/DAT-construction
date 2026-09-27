@@ -1,0 +1,23 @@
+{
+  "name": "dat-construction",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev --port 8080",
+    "start": "astro dev --port 8080",
+    "build": "astro build",
+    "preview": "astro preview --port 8080",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.6",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/manrope": "^5.1.0",
+    "@fontsource/plus-jakarta-sans": "^5.1.0",
+    "astro": "^7.3.3",
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

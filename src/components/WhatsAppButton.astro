@@ -1,0 +1,55 @@
+---
+import { getCompanyData, hasWhatsapp } from '../lib/company';
+
+const company = getCompanyData();
+const render = hasWhatsapp(company);
+const prefilledText = encodeURIComponent('Hello DAT Construction, I would like to request a quote for my project.');
+---
+
+{render && (
+  <a
+    href={`https://wa.me/${company.whatsapp}?text=${prefilledText}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="whatsapp-float-btn"
+    aria-label="Chat with DAT Construction on WhatsApp"
+  >
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.031 2c-5.517 0-9.993 4.476-9.993 9.993 0 1.763.459 3.479 1.33 4.996l-1.417 5.176 5.297-1.389c1.464.798 3.116 1.217 4.782 1.217h.005c5.516 0 9.992-4.477 9.992-9.994.001-2.669-1.036-5.178-2.923-7.065-1.888-1.887-4.398-2.935-7.073-2.935zm0 18.286h-.004c-1.5 0-2.973-.404-4.258-1.168l-.305-.181-3.16.829.843-3.081-.198-.316c-.84-1.336-1.284-2.883-1.284-4.476 0-4.57 3.717-8.287 8.288-8.287 2.213 0 4.294.863 5.86 2.429 1.565 1.566 2.427 3.647 2.427 5.86 0 4.571-3.718 8.287-8.287 8.287z"/>
+    </svg>
+    <span class="whatsapp-label">WhatsApp Us</span>
+  </a>
+)}
+
+<style>
+  .whatsapp-float-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background-color: #25D366;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border-radius: 30px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    z-index: 999;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  .whatsapp-float-btn:hover {
+    background-color: #1EBE5D;
+    transform: translateY(-2px);
+  }
+  @media (max-width: 600px) {
+    .whatsapp-label {
+      display: none;
+    }
+    .whatsapp-float-btn {
+      padding: 14px;
+      border-radius: 50%;
+    }
+  }
+</style>

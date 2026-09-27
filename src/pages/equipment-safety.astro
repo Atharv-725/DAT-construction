@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Equipment Fleet & Safety Standards | DAT Construction" description="Equipment machinery assets, site testing, quality control, and industrial safety compliance.">
+  <div class="page-banner">
+    <div class="section-container">
+      <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <strong>Equipment & Safety</strong></div>
+      <h1>Equipment Fleet & Safety Standards</h1>
+      <p class="banner-sub">Machinery inventory, technical testing, and quality control protocols.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-container fleet-grid">
+      <div class="fleet-box">
+        <h2>Machinery & Equipment Fleet</h2>
+        <ul class="fleet-list">
+          <li><strong>Earthmoving Machinery:</strong> Excavators, Backhoe Loaders, and Tipper Trucks</li>
+          <li><strong>Paving Equipment:</strong> Compaction Rollers, Portable Concrete Mixers, and Vibrators</li>
+          <li><strong>Environmental Assets:</strong> Water Tankers, Irrigation Pumps, and Cutters</li>
+          <li><strong>Utility Support:</strong> Submersible De-sludging Pumps and STP Instrumentation</li>
+        </ul>
+      </div>
+
+      <div class="fleet-box">
+        <h2>Quality Control & Industrial Safety</h2>
+        <ul class="fleet-list">
+          <li><strong>Raw Material Testing:</strong> Aggregate, cement, sand, and water quality testing before casting.</li>
+          <li><strong>Worker Safety (HSE):</strong> Mandatory Personal Protective Equipment (PPE), site signage, and risk assessments.</li>
+          <li><strong>Site Engineering Supervision:</strong> On-site civil engineers supervising daily execution.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+  }
+  .fleet-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 36px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .fleet-box h2 {
+    font-size: 1.35rem;
+    color: var(--navy-deep);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--gold-primary);
+  }
+  .fleet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    list-style: none;
+  }
+  .fleet-list li {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .fleet-list li strong {
+    color: var(--navy-deep);
+  }
+</style>

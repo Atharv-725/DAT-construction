@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Terms of Use | DAT Construction" description="Terms of use and legal disclaimers for DAT Construction website.">
+  <div class="page-banner">
+    <div class="section-container">
+      <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <strong>Terms</strong></div>
+      <h1>Terms of Use</h1>
+      <p class="banner-sub">Terms and conditions governing the use of this website.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-container legal-content">
+      <h2>1. Acceptable Use</h2>
+      <p>The information on this website is provided for general informational and commercial inquiry purposes. All project scopes, capabilities, and contact mechanisms are provided for prospective clients and sub-contractors.</p>
+
+      <h2>2. Intellectual Property</h2>
+      <p>All content, design, branding, and text on this website are owned by DAT Construction. Unauthorized copying or redistribution is prohibited.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal-content {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: var(--radius-md);
+  }
+  .legal-content h2 {
+    font-size: 1.35rem;
+    color: var(--navy-deep);
+    margin: 28px 0 12px;
+  }
+  .legal-content p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+</style>

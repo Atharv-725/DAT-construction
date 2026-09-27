@@ -1,0 +1,213 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCompanyData, hasPhone, hasEmail, hasAddress } from '../lib/company';
+
+const company = getCompanyData();
+---
+
+<Base title="Contact Us & Get a Quote | DAT Construction" description="Get a quote or submit your project details directly to DAT Construction in Indore, MP.">
+  <div class="page-banner">
+    <div class="section-container">
+      <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <strong>Contact</strong></div>
+      <h1>Get a Quote</h1>
+      <p class="banner-sub">Submit your project details or enquiry to DAT Construction.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-container contact-grid">
+      <div class="contact-info">
+        <h2>Contact Information</h2>
+        <p>For project enquiries, site visits, or contract discussions, reach out directly to our team.</p>
+
+        <div class="info-list">
+          {hasPhone(company) && (
+            <div class="info-item">
+              <span class="info-label">PHONE</span>
+              <a href={`tel:${company.phone.dial}`} class="info-val"><strong>{company.phone.display}</strong></a>
+            </div>
+          )}
+
+          {hasEmail(company) && (
+            <div class="info-item">
+              <span class="info-label">EMAIL</span>
+              <a href={`mailto:${company.email}`} class="info-val"><strong>{company.email}</strong></a>
+            </div>
+          )}
+
+          {hasAddress(company) && (
+            <div class="info-item">
+              <span class="info-label">OFFICE LOCATION</span>
+              <div class="info-val">{company.address.line1}, {company.address.city}, {company.address.state} {company.address.pincode}</div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Request a Project Quote</h3>
+        <form id="enquiryForm" novalidate>
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" required placeholder="e.g. Rajesh Sharma" aria-required="true">
+            <span class="field-error" id="nameError" aria-live="polite"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210" aria-required="true">
+              <span class="field-error" id="phoneError" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required placeholder="name@domain.com" aria-required="true">
+              <span class="field-error" id="emailError" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="scope">Scope of Work</label>
+            <select id="scope" name="scope">
+              <option value="Civil Engineering & Construction">Civil Engineering & Construction</option>
+              <option value="Water Treatment & STP Operations">Water Treatment & STP Operations</option>
+              <option value="Institutional Landscaping">Institutional Landscaping</option>
+              <option value="Roads & Earthworks">Roads & Earthworks</option>
+              <option value="Facility Maintenance (AMC)">Facility Maintenance (AMC)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Project Description *</label>
+            <textarea id="message" name="message" rows="4" required placeholder="Describe site location, timeline, and scope..." aria-required="true"></textarea>
+            <span class="field-error" id="messageError" aria-live="polite"></span>
+          </div>
+
+          <!-- Honeypot Bot Check (off-screen positioning) -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="website_hp">Leave empty</label>
+            <input type="text" id="website_hp" name="website_hp" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn btn-primary btn-full">Submit Quote Request</button>
+          
+          <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+
+          <p class="privacy-note">
+            By submitting this form, you agree to our <a href="/privacy">Privacy Notice</a> regarding data collection under India's DPDP Act 2023.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 60px;
+  }
+  .contact-info h2 {
+    color: var(--navy-deep);
+    margin-bottom: 12px;
+  }
+  .contact-info p {
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+  .info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .info-item {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+  }
+  .info-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--gold-text);
+    margin-bottom: 4px;
+  }
+  .info-val {
+    font-size: 1.05rem;
+    color: var(--navy-deep);
+  }
+  .form-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 36px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .form-card h3 {
+    color: var(--navy-deep);
+    margin-bottom: 24px;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--navy-deep);
+  }
+  input, select, textarea {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 12px 14px;
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--navy-deep);
+    background-color: #FFFFFF;
+  }
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+  .field-error {
+    font-size: 0.78rem;
+    color: #DC2626;
+    font-weight: 600;
+  }
+  .form-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+  .privacy-note {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-top: 12px;
+  }
+  .privacy-note a {
+    color: var(--gold-text);
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  import { initEnquiryForm } from '../scripts/enquiry';
+  initEnquiryForm();
+</script>

@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import teamData from '../data/team.json';
+
+interface TeamMember {
+  name: string;
+  role: string;
+  bio?: string;
+  image?: string;
+}
+
+const team = (teamData as TeamMember[]) || [];
+const hasTeam = team.length > 0;
+---
+
+<Base title="Leadership & Team | DAT Construction" description="Meet the leadership and engineering team behind DAT Construction in Indore, MP.">
+  <div class="page-banner">
+    <div class="section-container">
+      <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <strong>Team</strong></div>
+      <h1>Leadership & Team</h1>
+      <p class="banner-sub">Key personnel overseeing engineering execution, site safety, and project management.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-container">
+      {!hasTeam ? (
+        <div class="empty-state">
+          <h2>Leadership Directory Pending Confirmation</h2>
+          <p>Key management profiles and site engineering leads will be published following formal client verification.</p>
+        </div>
+      ) : (
+        <div class="team-grid">
+          {team.map(member => (
+            <div class="team-card">
+              <h3>{member.name}</h3>
+              <span class="role">{member.role}</span>
+              {member.bio && <p>{member.bio}</p>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .empty-state h2 {
+    color: var(--navy-deep);
+    margin-bottom: 12px;
+  }
+  .empty-state p {
+    color: var(--text-muted);
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .team-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    border-radius: var(--radius-md);
+  }
+  .team-card h3 {
+    color: var(--navy-deep);
+    margin-bottom: 4px;
+  }
+  .role {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold-text);
+  }
+</style>

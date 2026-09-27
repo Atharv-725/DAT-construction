@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+src/data/company.json
+.env
+.env.local
+.DS_Store
+*.log
+quote_requests.xlsx
+quote_requests_pending.json

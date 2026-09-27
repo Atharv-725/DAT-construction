@@ -1,0 +1,169 @@
+---
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/700.css';
+import '@fontsource/manrope/800.css';
+import '@fontsource/plus-jakarta-sans/400.css';
+import '@fontsource/plus-jakarta-sans/600.css';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '../styles/global.css';
+
+import { getCompanyData, hasPhone, hasEmail, hasAddress, hasRegistrations, hasCertifications } from '../lib/company';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+}
+
+const company = getCompanyData();
+const {
+  title = `${company.displayName || 'DAT Construction'} | Civil Engineering & Infrastructure Contractor | Indore`,
+  description = company.tagline || 'DAT Construction delivers civil engineering, infrastructure, water treatment, and facility maintenance works in Indore, Madhya Pradesh.',
+  ogImage = '/og-image.jpg',
+  canonicalUrl = Astro.url.href
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertifications(company);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonicalUrl}>
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={new URL(ogImage, Astro.url)}>
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content={canonicalUrl}>
+  <meta property="twitter:title" content={title}>
+  <meta property="twitter:description" content={description}>
+  <meta property="twitter:image" content={new URL(ogImage, Astro.url)}>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  {showTopBar && (
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <div class="top-bar-left">
+          {hasRegistrations(company) && (
+            <span class="govt-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V7l-9-5zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 9z"/></svg>
+              {company.registrations[0].label}: {company.registrations[0].number}
+            </span>
+          )}
+          {hasAddress(company) && (
+            <span>{company.address.city}, {company.address.state}</span>
+          )}
+        </div>
+        <div class="top-bar-right">
+          {hasCertifications(company) && (
+            <span>{company.certifications[0].name}</span>
+          )}
+          {hasPhone(company) && (
+            <a href={`tel:${company.phone.dial}`}>📞 {company.phone.display}</a>
+          )}
+        </div>
+      </div>
+    </div>
+  )}
+
+  <header class="nav">
+    <a class="brand" href="/" aria-label="DAT Construction Home">
+      <div class="brand-crest">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">{company.displayName || 'DAT CONSTRUCTION'}</span>
+        <span class="brand-sub">CIVIL & INFRASTRUCTURE CONTRACTOR</span>
+      </div>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primaryNav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav-links" id="primaryNav">
+      <a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
+      <a href="/about" aria-current={currentPath === '/about' ? 'page' : undefined}>About</a>
+      <a href="/services" aria-current={currentPath === '/services' ? 'page' : undefined}>Services</a>
+      <a href="/projects" aria-current={currentPath === '/projects' ? 'page' : undefined}>Projects</a>
+      <a href="/equipment-safety" aria-current={currentPath === '/equipment-safety' ? 'page' : undefined}>Equipment & Safety</a>
+      <a href="/contact" class="nav-cta" aria-current={currentPath === '/contact' ? 'page' : undefined}>Get a Quote</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <WhatsAppButton />
+
+  <footer class="official-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-crest">DAT</div>
+          <div>
+            <strong>{company.legalName || 'DAT CONSTRUCTION'}</strong>
+            <small>Civil Engineering & Infrastructure Contractor</small>
+          </div>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a href="/services">Services</a>
+          <a href="/projects">Projects</a>
+          <a href="/equipment-safety">Equipment & Safety</a>
+          <a href="/credentials">Credentials</a>
+          <a href="/team">Team</a>
+          <a href="/careers">Careers</a>
+          <a href="/contact">Contact</a>
+          <a href="/privacy">Privacy Notice</a>
+          <a href="/terms">Terms</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© {new Date().getFullYear()} {company.displayName || 'DAT Construction'}. All rights reserved.</p>
+        {hasAddress(company) && (
+          <p>{company.address.line1}, {company.address.city}, {company.address.state} {company.address.pincode}</p>
+        )}
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const primaryNav = document.getElementById('primaryNav');
+
+    if (menuToggle && primaryNav) {
+      menuToggle.addEventListener('click', () => {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+        primaryNav.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Services & Capabilities | DAT Construction" description="Civil engineering, water processing, landscaping, road paving, and maintenance services in Indore, MP.">
+  <div class="page-banner">
+    <div class="section-container">
+      <div class="breadcrumb"><a href="/">Home</a> <span>/</span> <strong>Services</strong></div>
+      <h1>Core Engineering Services</h1>
+      <p class="banner-sub">Technical execution capabilities across civil, water, environmental, and infrastructure domains.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-container">
+      <div class="services-detail-grid">
+        <div class="service-detail-card" id="civil">
+          <h2>01. Civil & Structural Engineering</h2>
+          <p>Full-scale civil construction, building repair, RCC structural work, masonry, boundary walls, and site preparation for institutional and municipal facilities.</p>
+          <ul>
+            <li>Building construction and structural repair</li>
+            <li>RCC foundations, beams, and slabs</li>
+            <li>Boundary walls and security fencing</li>
+          </ul>
+        </div>
+
+        <div class="service-detail-card" id="water">
+          <h2>02. Water & Sewage Systems (STP)</h2>
+          <p>Operational support, installation, and maintenance for Sewage Treatment Plants (STP), raw water distribution lines, collection wells, and pumping facilities.</p>
+          <ul>
+            <li>STP operation and monitoring</li>
+            <li>Collection well maintenance</li>
+            <li>Pipeline distribution repairs</li>
+          </ul>
+        </div>
+
+        <div class="service-detail-card" id="landscaping">
+          <h2>03. Institutional Landscaping & Forestry</h2>
+          <p>Development and maintenance of high-acreage institutional parks, nurseries, grassed playfields, and afforestation initiatives.</p>
+          <ul>
+            <li>Park and grounds maintenance</li>
+            <li>Nursery sapling management</li>
+            <li>Sports field turfing and pruning</li>
+          </ul>
+        </div>
+
+        <div class="service-detail-card" id="roads">
+          <h2>04. Roads & Earthworks</h2>
+          <p>Site grading, trenching, bituminous and concrete internal access road construction, and stormwater drainage channels.</p>
+          <ul>
+            <li>Site levelling and grading</li>
+            <li>Stormwater drain networks</li>
+            <li>Bitumen and concrete paving</li>
+          </ul>
+        </div>
+
+        <div class="service-detail-card" id="amc">
+          <h2>05. Facility Maintenance (AMC)</h2>
+          <p>Long-term annual maintenance contracts for residential quarters, utility installations, and commercial complexes.</p>
+          <ul>
+            <li>Turnkey annual maintenance contracts</li>
+            <li>Routine site inspection and audit records</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .services-detail-grid {
+    display: grid;
+    gap: 32px;
+  }
+  .service-detail-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 36px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .service-detail-card h2 {
+    font-size: 1.4rem;
+    color: var(--navy-deep);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-primary);
+  }
+  .service-detail-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .service-detail-card ul {
+    padding-left: 20px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .service-detail-card li {
+    margin-bottom: 6px;
+  }
+</style>
