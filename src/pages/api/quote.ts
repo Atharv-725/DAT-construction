@@ -2,11 +2,14 @@ import type { APIRoute } from 'astro';
 import ExcelJS from 'exceljs';
 import path from 'node:path';
 import fs from 'node:fs';
+import os from 'node:os';
 
 export const prerender = false;
 
-const EXCEL_FILE_PATH = path.resolve(process.cwd(), 'quote_requests.xlsx');
-const QUEUE_FILE_PATH = path.resolve(process.cwd(), 'quote_requests_pending.json');
+// Use OS temp directory for serverless environments (e.g. Vercel) where process.cwd() is read-only
+const STORAGE_DIR = process.env.VERCEL ? os.tmpdir() : process.cwd();
+const EXCEL_FILE_PATH = path.resolve(STORAGE_DIR, 'quote_requests.xlsx');
+const QUEUE_FILE_PATH = path.resolve(STORAGE_DIR, 'quote_requests_pending.json');
 
 interface QuoteRecord {
   timestamp: string;
