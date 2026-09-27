@@ -326,8 +326,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   gap: 14px;
   padding: 10px 14px;
   width: 100%;
-  border-radius: 12px;
-  border: 1.5px solid transparent;
+  border-radius: 10px;
+  border: 1px solid transparent;
   background: transparent;
   color: #334155;
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -346,8 +346,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .menu-list-item.active {
-  background: #E2ECE9; /* Soft greyish teal tint */
-  border-color: #005F56; /* Active border outline ring */
   color: #005F56;
 }
 
