@@ -115,6 +115,15 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
     </a>
 
     <nav class="nav-links" id="primaryNav">
+      <!-- Mobile Logged-in User Header -->
+      <div id="mobileUserHeader" class="mobile-user-header hidden">
+        <div class="avatar-circle" id="mobileUserAvatarCircle">A</div>
+        <div class="mobile-user-info">
+          <strong id="mobileUserName">Customer Account</strong>
+          <small id="mobileUserEmail">user@example.com</small>
+        </div>
+      </div>
+
       <a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
       <a href="/about" aria-current={currentPath === '/about' ? 'page' : undefined}>About</a>
       <a href="/services" aria-current={currentPath === '/services' ? 'page' : undefined}>Services</a>
@@ -126,6 +135,18 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       {currentPath !== '/login' && currentPath !== '/login/' && (
         <a href="/login" id="navAuthLink" class="nav-auth-item">Customer Portal</a>
       )}
+
+      <!-- Mobile Logged-in Sign Out Button -->
+      <div id="mobileLogoutWrapper" class="mobile-logout-wrapper hidden">
+        <button type="button" class="mobile-logout-btn global-logout-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
     </nav>
 
     <div class="nav-right-actions">
@@ -210,34 +231,20 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
   <script>
     const menuToggle = document.getElementById('menuToggle');
     const primaryNav = document.getElementById('primaryNav');
+    const navRightActions = document.querySelector('.nav-right-actions');
 
-    if (menuToggle && primaryNav) {
-      menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
-        primaryNav.classList.toggle('open');
-        menuToggle.classList.toggle('open');
-      });
-
-      document.addEventListener('click', (e) => {
-        const target = e.target as Node;
-        if (primaryNav.classList.contains('open') && !primaryNav.contains(target) && !menuToggle.contains(target)) {
-          primaryNav.classList.remove('open');
-          menuToggle.classList.remove('open');
-          menuToggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-
-    // Dynamic User Auth UI & Account Dropdown Menu Handler
     const navAuthLink = document.getElementById('navAuthLink');
     const userAccountMenu = document.getElementById('userAccountMenu');
     const userAvatarCircle = document.getElementById('userAvatarCircle');
+    const mobileUserAvatarCircle = document.getElementById('mobileUserAvatarCircle');
     const dropdownUserName = document.getElementById('dropdownUserName');
+    const mobileUserName = document.getElementById('mobileUserName');
     const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const mobileUserEmail = document.getElementById('mobileUserEmail');
     const accountMenuBtn = document.getElementById('accountMenuBtn');
     const accountDropdown = document.getElementById('accountDropdown');
+    const mobileUserHeader = document.getElementById('mobileUserHeader');
+    const mobileLogoutWrapper = document.getElementById('mobileLogoutWrapper');
 
     try {
       const rawSession = localStorage.getItem('dat_customer_session');
@@ -248,45 +255,93 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
           const initial = nameToUse.trim().charAt(0).toUpperCase();
 
           if (userAvatarCircle) userAvatarCircle.textContent = initial;
-          if (dropdownUserName) dropdownUserName.textContent = session.fullName || session.email.split('@')[0];
+          if (mobileUserAvatarCircle) mobileUserAvatarCircle.textContent = initial;
+
+          const displayName = session.fullName || session.email.split('@')[0];
+          if (dropdownUserName) dropdownUserName.textContent = displayName;
+          if (mobileUserName) mobileUserName.textContent = displayName;
+
           if (dropdownUserEmail) dropdownUserEmail.textContent = session.email;
+          if (mobileUserEmail) mobileUserEmail.textContent = session.email;
 
           if (navAuthLink) navAuthLink.classList.add('hidden');
           if (userAccountMenu) userAccountMenu.classList.remove('hidden');
+          if (mobileUserHeader) mobileUserHeader.classList.remove('hidden');
+          if (mobileLogoutWrapper) mobileLogoutWrapper.classList.remove('hidden');
+          if (navRightActions) navRightActions.classList.add('has-account');
         }
       }
     } catch (e) {
       // Session parse error fallback
     }
 
-    // Toggle dropdown on account pill click
-    if (accountMenuBtn && accountDropdown) {
+    if (menuToggle && primaryNav) {
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+        primaryNav.classList.toggle('open');
+        menuToggle.classList.toggle('open');
+      });
+    }
+
+    if (accountMenuBtn) {
       accountMenuBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const isShown = accountDropdown.classList.contains('show');
-        if (!isShown) {
-          accountDropdown.classList.add('show');
-          accountDropdown.classList.remove('hidden');
-          accountDropdown.style.display = 'block';
-          accountMenuBtn.setAttribute('aria-expanded', 'true');
-        } else {
-          accountDropdown.classList.remove('show');
-          accountDropdown.classList.add('hidden');
-          accountDropdown.style.display = 'none';
-          accountMenuBtn.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      document.addEventListener('click', (e) => {
-        const target = e.target as Node;
-        if (userAccountMenu && !userAccountMenu.contains(target)) {
-          accountDropdown.classList.remove('show');
-          accountDropdown.classList.add('hidden');
-          accountDropdown.style.display = 'none';
-          accountMenuBtn.setAttribute('aria-expanded', 'false');
+        if (window.innerWidth <= 900 && primaryNav) {
+          // On mobile: pill button acts as the unified user navigation menu trigger
+          const isOpen = primaryNav.classList.contains('open');
+          if (!isOpen) {
+            primaryNav.classList.add('open');
+            accountMenuBtn.setAttribute('aria-expanded', 'true');
+          } else {
+            primaryNav.classList.remove('open');
+            accountMenuBtn.setAttribute('aria-expanded', 'false');
+          }
+          if (accountDropdown) {
+            accountDropdown.classList.remove('show');
+            accountDropdown.classList.add('hidden');
+            accountDropdown.style.display = 'none';
+          }
+        } else if (accountDropdown) {
+          // On desktop: toggle desktop dropdown card
+          const isShown = accountDropdown.classList.contains('show');
+          if (!isShown) {
+            accountDropdown.classList.add('show');
+            accountDropdown.classList.remove('hidden');
+            accountDropdown.style.display = 'block';
+            accountMenuBtn.setAttribute('aria-expanded', 'true');
+          } else {
+            accountDropdown.classList.remove('show');
+            accountDropdown.classList.add('hidden');
+            accountDropdown.style.display = 'none';
+            accountMenuBtn.setAttribute('aria-expanded', 'false');
+          }
         }
       });
     }
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      if (accountDropdown && userAccountMenu && !userAccountMenu.contains(target)) {
+        accountDropdown.classList.remove('show');
+        accountDropdown.classList.add('hidden');
+        accountDropdown.style.display = 'none';
+        if (accountMenuBtn && window.innerWidth > 900) {
+          accountMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+      if (primaryNav && primaryNav.classList.contains('open') && !primaryNav.contains(target) && (!navRightActions || !navRightActions.contains(target))) {
+        primaryNav.classList.remove('open');
+        if (menuToggle) {
+          menuToggle.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+        if (accountMenuBtn) {
+          accountMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
 
     // Attach click listener to all global Sign Out buttons
     document.querySelectorAll('.global-logout-btn').forEach((btn) => {

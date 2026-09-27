@@ -608,6 +608,11 @@ input, select, textarea {
     letter-spacing: 0.08em;
   }
 
+  /* When logged in, hide standalone menuToggle on mobile so [A ≡] is the single merged button */
+  .nav-right-actions.has-account #menuToggle {
+    display: none !important;
+  }
+
   .nav-links {
     position: absolute;
     top: 70px;
@@ -624,6 +629,63 @@ input, select, textarea {
     z-index: 999;
     margin-left: 0;
     margin-right: 0;
+  }
+
+  .mobile-user-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+  }
+
+  .mobile-user-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-user-info strong {
+    font-size: 0.95rem;
+    color: #FFFFFF;
+    line-height: 1.2;
+  }
+
+  .mobile-user-info small {
+    font-size: 0.78rem;
+    color: #94A3B8;
+    word-break: break-all;
+  }
+
+  .mobile-logout-wrapper {
+    padding: 12px 0 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin-top: 8px;
+  }
+
+  .mobile-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-sm);
+    color: #F87171;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-logout-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #FFFFFF;
   }
 
   .nav-links.open {
