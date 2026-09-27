@@ -98,11 +98,6 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
           {hasPhone(company) && (
             <a href={`tel:${company.phone.dial}`}>📞 {company.phone.display}</a>
           )}
-          <!-- Top Bar Customer Auth Profile & Logout -->
-          <div id="topBarUserSection" class="top-bar-user hidden">
-            <span class="user-email" id="userEmailSpan"></span>
-            <button class="btn-logout global-logout-btn" type="button" title="Sign out of customer account">Sign Out</button>
-          </div>
         </div>
       </div>
     </div>
@@ -134,10 +129,29 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       <!-- Unauthenticated customer portal link -->
       <a href="/login" id="navAuthLink" class="nav-auth-item">Customer Portal</a>
 
-      <!-- Logged in Customer Wrapper with Sign Out -->
-      <div id="navUserWrapper" class="nav-user-wrapper hidden">
-        <span id="navUserPill" class="nav-user-pill">👤 Account</span>
-        <button class="btn-logout global-logout-btn" type="button" title="Sign out of customer account">Sign Out</button>
+      <!-- Logged in Customer Pill with Avatar + 3 lines icon + Dropdown Menu -->
+      <div id="userAccountMenu" class="user-account-wrapper hidden">
+        <button id="accountMenuBtn" class="account-menu-pill" type="button" aria-expanded="false" aria-label="Customer Account menu">
+          <div class="avatar-circle" id="userAvatarCircle">A</div>
+          <svg class="menu-bars-icon" width="18" height="14" viewBox="0 0 18 14" fill="currentColor">
+            <rect y="0" width="18" height="2" rx="1" />
+            <rect y="6" width="18" height="2" rx="1" />
+            <rect y="12" width="18" height="2" rx="1" />
+          </svg>
+        </button>
+
+        <div id="accountDropdown" class="account-dropdown hidden">
+          <div class="dropdown-header">
+            <strong id="dropdownUserName">Customer Account</strong>
+            <small id="dropdownUserEmail">user@example.com</small>
+            <span class="account-badge">Verified Customer</span>
+          </div>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item global-logout-btn" type="button">
+            <span>Sign Out</span>
+            <span>↗</span>
+          </button>
+        </div>
       </div>
     </nav>
   </header>
@@ -206,35 +220,56 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       });
     }
 
-    // Dynamic User Auth UI & Sign Out Handler
-    const topBarUserSection = document.getElementById('topBarUserSection');
-    const userEmailSpan = document.getElementById('userEmailSpan');
+    // Dynamic User Auth UI & Account Dropdown Menu Handler
     const navAuthLink = document.getElementById('navAuthLink');
-    const navUserWrapper = document.getElementById('navUserWrapper');
-    const navUserPill = document.getElementById('navUserPill');
+    const userAccountMenu = document.getElementById('userAccountMenu');
+    const userAvatarCircle = document.getElementById('userAvatarCircle');
+    const dropdownUserName = document.getElementById('dropdownUserName');
+    const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const accountMenuBtn = document.getElementById('accountMenuBtn');
+    const accountDropdown = document.getElementById('accountDropdown');
 
     try {
       const rawSession = localStorage.getItem('dat_customer_session');
       if (rawSession) {
         const session = JSON.parse(rawSession);
         if (session && session.email) {
-          // Update Top Bar
-          if (topBarUserSection && userEmailSpan) {
-            userEmailSpan.textContent = session.email;
-            topBarUserSection.classList.remove('hidden');
-          }
-          // Update Navigation Bar
-          if (navAuthLink) {
-            navAuthLink.classList.add('hidden');
-          }
-          if (navUserWrapper && navUserPill) {
-            navUserPill.textContent = session.fullName ? `👤 ${session.fullName}` : `👤 ${session.email.split('@')[0]}`;
-            navUserWrapper.classList.remove('hidden');
-          }
+          const nameToUse = session.fullName || session.email;
+          const initial = nameToUse.trim().charAt(0).toUpperCase();
+
+          if (userAvatarCircle) userAvatarCircle.textContent = initial;
+          if (dropdownUserName) dropdownUserName.textContent = session.fullName || session.email.split('@')[0];
+          if (dropdownUserEmail) dropdownUserEmail.textContent = session.email;
+
+          if (navAuthLink) navAuthLink.classList.add('hidden');
+          if (userAccountMenu) userAccountMenu.classList.remove('hidden');
         }
       }
     } catch (e) {
       // Session parse error fallback
+    }
+
+    // Toggle dropdown on account pill click
+    if (accountMenuBtn && accountDropdown) {
+      accountMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = accountDropdown.classList.contains('hidden');
+        if (isHidden) {
+          accountDropdown.classList.remove('hidden');
+          accountMenuBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          accountDropdown.classList.add('hidden');
+          accountMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        const target = e.target as Node;
+        if (userAccountMenu && !userAccountMenu.contains(target)) {
+          accountDropdown.classList.add('hidden');
+          accountMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
     }
 
     // Attach click listener to all global Sign Out buttons
