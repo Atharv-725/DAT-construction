@@ -205,6 +205,21 @@ const company = getCompanyData();
     color: var(--gold-text);
     text-decoration: underline;
   }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+  }
+  @media (max-width: 600px) {
+    .form-card {
+      padding: 24px 18px;
+    }
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 
 <script>

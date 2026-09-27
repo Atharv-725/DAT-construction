@@ -158,10 +158,21 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
     const primaryNav = document.getElementById('primaryNav');
 
     if (menuToggle && primaryNav) {
-      menuToggle.addEventListener('click', () => {
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
         const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
         menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
         primaryNav.classList.toggle('open');
+        menuToggle.classList.toggle('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        const target = e.target as Node;
+        if (primaryNav.classList.contains('open') && !primaryNav.contains(target) && !menuToggle.contains(target)) {
+          primaryNav.classList.remove('open');
+          menuToggle.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
       });
     }
   </script>
