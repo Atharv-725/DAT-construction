@@ -140,7 +140,7 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
           </svg>
         </button>
 
-        <div id="accountDropdown" class="account-dropdown hidden" role="menu">
+        <div id="accountDropdown" class="account-dropdown hidden" style="display: none;" role="menu">
           <div class="dropdown-user-info">
             <strong id="dropdownUserName">Customer Account</strong>
             <small id="dropdownUserEmail">user@example.com</small>
@@ -298,12 +298,16 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
     if (accountMenuBtn && accountDropdown) {
       accountMenuBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const isHidden = accountDropdown.classList.contains('hidden');
-        if (isHidden) {
+        const isShown = accountDropdown.classList.contains('show');
+        if (!isShown) {
+          accountDropdown.classList.add('show');
           accountDropdown.classList.remove('hidden');
+          accountDropdown.style.display = 'block';
           accountMenuBtn.setAttribute('aria-expanded', 'true');
         } else {
+          accountDropdown.classList.remove('show');
           accountDropdown.classList.add('hidden');
+          accountDropdown.style.display = 'none';
           accountMenuBtn.setAttribute('aria-expanded', 'false');
         }
       });
@@ -311,7 +315,9 @@ const showTopBar = hasPhone(company) || hasRegistrations(company) || hasCertific
       document.addEventListener('click', (e) => {
         const target = e.target as Node;
         if (userAccountMenu && !userAccountMenu.contains(target)) {
+          accountDropdown.classList.remove('show');
           accountDropdown.classList.add('hidden');
+          accountDropdown.style.display = 'none';
           accountMenuBtn.setAttribute('aria-expanded', 'false');
         }
       });

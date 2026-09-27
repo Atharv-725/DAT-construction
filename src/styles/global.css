@@ -216,6 +216,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   gap: 12px;
 }
 
+/* Utility hidden class */
+.hidden {
+  display: none !important;
+}
+
 /* Custom Account Menu Pill & Dropdown (Matching Reference Design) */
 .account-menu-pill {
   display: inline-flex;
@@ -264,6 +269,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .account-dropdown {
+  display: none;
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
@@ -275,6 +281,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   padding: 10px;
   z-index: 2000;
   color: #1E293B;
+}
+
+.account-dropdown.show {
+  display: block !important;
   animation: dropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
