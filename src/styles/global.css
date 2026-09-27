@@ -360,6 +360,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   margin: 6px 4px;
 }
 
+/* Mobile-only drawer elements (Strictly hidden on Desktop) */
+.mobile-user-header,
+.mobile-logout-wrapper {
+  display: none !important;
+}
+
 /* Header & Nav */
 .nav {
   height: 80px;
@@ -631,8 +637,8 @@ input, select, textarea {
     margin-right: 0;
   }
 
-  .mobile-user-header {
-    display: flex;
+  .mobile-user-header:not(.hidden) {
+    display: flex !important;
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
@@ -659,7 +665,8 @@ input, select, textarea {
     word-break: break-all;
   }
 
-  .mobile-logout-wrapper {
+  .mobile-logout-wrapper:not(.hidden) {
+    display: block !important;
     padding: 12px 0 4px;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     margin-top: 8px;
